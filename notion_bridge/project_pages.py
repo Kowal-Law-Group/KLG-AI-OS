@@ -68,7 +68,7 @@ _PROP_COURT_DEADLINE = "❌Next Court Deadline"   # hard legal deadline date —
 # Project Status values that qualify a matter as actively worked on.
 # Idea, Backlog, Done, and Canceled are excluded even when Matter Status is Active.
 # Verified 2026-08-24 against Notion Matter Deadlines view (123 rows total).
-_ACTIVE_PROJECT_STATUSES = frozenset({"planning", "in progress", "paused"})
+_ACTIVE_PROJECT_STATUSES = frozenset({"planning", "in progress", "paused", "waiting"})
 
 
 def _is_active_matter(m: dict) -> bool:

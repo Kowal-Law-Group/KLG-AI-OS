@@ -4,7 +4,7 @@ tests/test_matter_filter.py — Unit tests for the active-matter status filter.
 These tests cover _is_active_matter() and _ACTIVE_PROJECT_STATUSES, which
 together enforce the rule that a matter must have:
   - Matter Status: Active or On Hold
-  - Project Status: Planning, In progress, or Paused
+  - Project Status: Planning, In progress, Paused, or Waiting
 
 Run from the repo root:
     venv\\Scripts\\python -m pytest tests/test_matter_filter.py -v
@@ -25,12 +25,12 @@ def _m(matter_status: str, project_status: str = "") -> dict:
 # Cases that SHOULD be included
 # =============================================================================
 
-@pytest.mark.parametrize("ps", ["Planning", "In progress", "Paused"])
+@pytest.mark.parametrize("ps", ["Planning", "In progress", "Paused", "Waiting"])
 def test_active_matter_status_with_qualifying_project_status(ps):
     assert _is_active_matter(_m("Active", ps))
 
 
-@pytest.mark.parametrize("ps", ["Planning", "In progress", "Paused"])
+@pytest.mark.parametrize("ps", ["Planning", "In progress", "Paused", "Waiting"])
 def test_on_hold_matter_status_with_qualifying_project_status(ps):
     assert _is_active_matter(_m("On Hold", ps))
 
@@ -85,6 +85,7 @@ def test_active_project_statuses_contains_valid_values():
     assert "planning" in _ACTIVE_PROJECT_STATUSES
     assert "in progress" in _ACTIVE_PROJECT_STATUSES
     assert "paused" in _ACTIVE_PROJECT_STATUSES
+    assert "waiting" in _ACTIVE_PROJECT_STATUSES
 
 
 def test_active_project_statuses_excludes_invalid_values():
