@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import pytest
 
@@ -101,6 +101,18 @@ def test_relation_alias_preserves_ids_and_existing_matter_relation():
         "Matter": {"type": "relation", "relation": [{"id": "fake-case"}]},
     }})
     assert renamed["Case Portal"] == renamed["Matter"] == ["fake-case"]
+
+
+@pytest.mark.parametrize("names,raw,value", [
+    (work_schema.DUE, {"type": "date", "date": {"start": "2026-10-21"}}, "2026-10-21"),
+    (work_schema.HEARING, {"type": "date", "date": None}, None),
+    (work_schema.WORK_TYPE, {"type": "select", "select": {"name": "Appellate"}}, "Appellate"),
+    (work_schema.SUPPORT_KIND, {"type": "select", "select": None}, None),
+])
+@pytest.mark.parametrize("direction", [0, 1])
+def test_aliases_preserve_typed_and_empty_values(names, raw, value, direction):
+    page = page_to_dict({"properties": {names[direction]: raw}})
+    assert page[names[0]] == page[names[1]] == value
 
 
 @pytest.mark.parametrize("schema,title", [(OLD_SCHEMA, "Project name"), (NEW_SCHEMA, "Name")])

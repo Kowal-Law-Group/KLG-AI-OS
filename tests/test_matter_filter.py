@@ -40,6 +40,12 @@ def test_on_hold_capitalisation_variants():
     assert _is_active_matter(_m("On hold", "In progress"))
 
 
+def test_waiting_is_normalized_and_still_requires_active_matter_status():
+    assert _is_active_matter(_m("Active", " WAITING "))
+    assert not _is_active_matter(_m("Completed", "Waiting"))
+    assert not _is_active_matter(_m("", "Waiting"))
+
+
 # =============================================================================
 # Cases that SHOULD be excluded
 # =============================================================================
