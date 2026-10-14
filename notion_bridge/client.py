@@ -64,6 +64,7 @@ from tenacity import (
 )
 
 from config import settings
+from notion_bridge.work_schema import ALIASES
 
 logger = logging.getLogger(__name__)
 
@@ -696,6 +697,17 @@ def page_to_dict(raw_page: dict[str, Any]) -> dict[str, Any]:
     # Extract every property from the properties dict
     for prop_name, prop_value in raw_page.get("properties", {}).items():
         result[prop_name] = extract_property(prop_value)
+
+    for prop_name, prop_value in raw_page.get("properties", {}).items():
+        if prop_value.get("type") == "title":
+            result["title"] = extract_property(prop_value)
+            break
+
+    for new_name, old_name in ALIASES:
+        if new_name in result and old_name not in result:
+            result[old_name] = result[new_name]
+        elif old_name in result and new_name not in result:
+            result[new_name] = result[old_name]
 
     return result
 
