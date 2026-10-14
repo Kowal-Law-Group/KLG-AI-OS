@@ -10,6 +10,10 @@ Entries without a tag are mixed-agent or pre-multi-agent-setup commits.
 
 ---
 
+## 2026-10-14
+
+- **[Backend]** Added compatibility for the Projects-to-Work property rename: flattened pages carry both property names, matter queries and intake resolve the current title/category/work-type schema with a ten-minute cache, and Waiting qualifies in the backend and deadlines view. Added fake-schema regression tests. Existing Status writes remain unchanged pending review.
+
 ## 2026-08-21
 
 - **[Backend]** Security: closed the critical chunk-upload path traversal by requiring canonical UUID session IDs, generating backing paths server-side, enforcing temporary-directory containment before every write, using exclusive creation, and rejecting duplicate, malformed, or out-of-order sessions. Added focused regression coverage for malicious and legitimate uploads.
