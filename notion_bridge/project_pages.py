@@ -53,6 +53,7 @@ _PACIFIC = ZoneInfo("America/Los_Angeles")
 from typing import Any
 
 from notion_bridge.client import NotionBridge
+from notion_bridge.work_schema import WORK_TYPE, WorkSchema
 from config import settings
 
 logger = logging.getLogger(__name__)
@@ -179,21 +180,22 @@ class ProjectPages:
         if not settings.notion_projects_db_id:
             return []
 
-        filters: list[dict] = [
-            {"property": "Project name", "title": {"contains": name}}
-        ]
-
-        # If the query contains a trial court case number (e.g. 19STCV01092),
-        # also search the Tr. Ct. No. property and OR the two together.
-        case_num_match = re.search(r"\d{2}[A-Z]{2,5}\d{5,6}", name)
-        if case_num_match:
-            filters.append(
-                {"property": "Tr. Ct. No.", "rich_text": {"contains": case_num_match.group()}}
-            )
-
-        notion_filter = {"or": filters} if len(filters) > 1 else filters[0]
-
         try:
+            schema = WorkSchema(self._bridge, settings.notion_projects_db_id)
+            filters: list[dict] = [
+                {"property": await schema.title_prop(), "title": {"contains": name}}
+            ]
+
+            # If the query contains a trial court case number (e.g. 19STCV01092),
+            # also search the Tr. Ct. No. property and OR the two together.
+            case_num_match = re.search(r"\d{2}[A-Z]{2,5}\d{5,6}", name)
+            if case_num_match:
+                filters.append(
+                    {"property": "Tr. Ct. No.", "rich_text": {"contains": case_num_match.group()}}
+                )
+
+            notion_filter = {"or": filters} if len(filters) > 1 else filters[0]
+
             results = await self._bridge.query_database(
                 database_id=settings.notion_projects_db_id,
                 filter=notion_filter,
@@ -364,12 +366,13 @@ class ProjectPages:
         # deep compound filter nesting, so we keep each query simple.
         import asyncio
 
+        schema = WorkSchema(self._bridge, settings.notion_projects_db_id)
         category_clause = (
-            [{"property": "Category", "select": {"equals": category}}]
+            [await schema.category_filter(category)]
             if category else []
         )
         project_type_clause = (
-            [{"property": "Project Type", "select": {"equals": project_type}}]
+            [{"property": await schema.resolve(WORK_TYPE), "select": {"equals": project_type}}]
             if project_type else []
         )
 
@@ -435,14 +438,15 @@ class ProjectPages:
         Returns:
             List of matter dicts sorted by Priority descending.
         """
+        schema = WorkSchema(self._bridge, settings.notion_projects_db_id)
         conditions: list[dict] = []
         if category:
             conditions.append(
-                {"property": "Category", "select": {"equals": category}}
+                await schema.category_filter(category)
             )
         if project_type:
             conditions.append(
-                {"property": "Project Type", "select": {"equals": project_type}}
+                {"property": await schema.resolve(WORK_TYPE), "select": {"equals": project_type}}
             )
 
         db_filter: dict | None = (
