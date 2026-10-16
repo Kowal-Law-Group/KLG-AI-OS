@@ -18,6 +18,7 @@ from typing import Any
 from alfred.skills.base import Skill, SkillContext, SkillResult
 from config import settings
 from notion_bridge.project_pages import _PROP_DEADLINE
+from notion_bridge.work_schema import WorkSchema
 
 logger = logging.getLogger(__name__)
 
@@ -67,15 +68,19 @@ class KLGMatterIntake(Skill):
         target_date = extra.get("target_date", "")
         summary_text = extra.get("summary", "")
 
+        schema = WorkSchema(bridge, settings.notion_projects_db_id)
+        title_prop = await schema.title_prop()
+        category_prop, category_option = await schema.category_property(category)
+
         properties: dict[str, Any] = {
-            "Project name": {
+            title_prop: {
                 "title": [{"text": {"content": matter_name}}]
             },
             "Status": {
                 "status": {"name": "Planning"}
             },
-            "Category": {
-                "select": {"name": category}
+            category_prop: {
+                "select": {"name": category_option}
             },
             "Case Stage": {
                 "select": {"name": case_stage}

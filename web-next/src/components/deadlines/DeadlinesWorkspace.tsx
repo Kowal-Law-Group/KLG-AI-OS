@@ -74,7 +74,7 @@ const GROUP_ORDER = ['active', 'on hold']
 
 // Project Status values that place a matter inside Notion's Matter Deadlines view scope.
 // Idea, Backlog, Done, and Canceled are excluded — mirrors the backend _ACTIVE_PROJECT_STATUSES set.
-const VIEW_PROJECT_STATUSES = new Set(['planning', 'in progress', 'paused'])
+const VIEW_PROJECT_STATUSES = new Set(['planning', 'in progress', 'paused', 'waiting'])
 
 function groupByStatus(matters: Matter[]): Array<{ label: string; items: Matter[] }> {
   const map = new Map<string, Matter[]>()
