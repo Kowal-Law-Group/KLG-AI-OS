@@ -80,6 +80,7 @@ _SKILL_MODULES: list[tuple[str, str]] = [
     ("alfred.skills.klg_prebill_audit",             "KLGPrebillAudit"),
     ("alfred.skills.klg_research_compilation",      "KLGResearchCompilation"),
     ("alfred.skills.klg_brief_assembly",            "KLGBriefAssembly"),
+    ("alfred.skills.klg_brief_map",                 "KLGBriefMap"),
 ]
 
 # Registry of all successfully loaded skills, keyed by name.

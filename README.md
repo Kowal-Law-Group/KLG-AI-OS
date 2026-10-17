@@ -165,6 +165,7 @@ Alfred has 18 tools registered via `@AlfredAgent.tool`. These are what he can do
 | **Brief Elevation** | 2–4 hours | Tim / Edwyn | Elevates a draft brief to KLG standard — sharpens theory, improves structure, amplifies persuasion, verifies citations |
 | **Issue Framing** | 30 min | Tim | Frames the issue presented at three levels of specificity (narrow / mid / broad) and selects the version with maximum persuasive impact |
 | **Response Brief Strategy** | 30–60 min | Tim / Edwyn | Analyzes the appellant's opening brief — maps each argument, rates its strength, drafts counter-positions, record strategy, and research priorities |
+| **Brief Map** | 20–40 min | Tim / Edwyn | Maps each argument across the opening, response, and reply briefs — printed-page cites, a grade for the response, draft coverage, and an assessment or exposure column. Returns markdown for attorney review; the Notion database build runs in the Cowork klg-brief-map skill |
 | **Style Guide Check** | 15–20 min | Edwyn / Tim | Reviews a brief or memo against the KLG Style Guide — flags forbidden words, nominalizations, passive voice, and doubled modifiers with suggested fixes |
 | **Citation Audit** | 30–60 min | Edwyn / William | Two-phase citation audit: Phase A formats citations and builds a Westlaw pull list; Phase B verifies each citation against the source text |
 

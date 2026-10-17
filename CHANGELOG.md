@@ -10,6 +10,10 @@ Entries without a tag are mixed-agent or pre-multi-agent-setup commits.
 
 ---
 
+## 2026-10-16
+
+- **[Backend]** New Alfred skill `klg-brief-map` (port of Tim's Cowork skill; source of truth is KLG-AI-CONFIG v0.17.0). Reads the opening, response, reply, and working-draft briefs with per-page markers and returns an issue-by-issue map as markdown for attorney review. Does not build the Notion database or views; that stays in the Cowork skill. Registered in `alfred/skills/__init__.py`, added to the Skills launcher (Drafting) and the README skills library.
+
 ## 2026-08-21
 
 - **[Backend]** Security: closed the critical chunk-upload path traversal by requiring canonical UUID session IDs, generating backing paths server-side, enforcing temporary-directory containment before every write, using exclusive creation, and rejecting duplicate, malformed, or out-of-order sessions. Added focused regression coverage for malicious and legitimate uploads.
